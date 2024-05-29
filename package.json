@@ -1,0 +1,19 @@
+{
+  "name": "odin-s-hashmap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/daniel-citrus/Odin-s-HashMap.git"
+  },
+  "author": "Daniel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daniel-citrus/Odin-s-HashMap/issues"
+  },
+  "homepage": "https://github.com/daniel-citrus/Odin-s-HashMap#readme"
+}
