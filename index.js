@@ -1,20 +1,73 @@
 function HashMap() {
-    let array = [, , ,];
+    const START_SIZE = 16;
+    const LOAD_FACTOR = 0.75;
+    let array = new Array(START_SIZE);
+    let capacity = 0;
 
     function hash(key) {
-        const len = length();
-        return key && len ? key % len : null;
+        let hashCode = 0;
+        const primeNumber = 31;
+
+        for (let i = 0; i < key.length; i++) {
+            hashCode = primeNumber * hashCode + key.charCodeAt(i);
+            hashCode %= array.length;
+        }
+
+        return hashCode;
+    }
+
+    function set(key, value) {
+        // get hash code
+        // check array for existing values
+        //      if undefined
+        //          insert a new node
+        //          store key
+        //          store value
+        //          store next node is null
+        //      else
+        //          insert new node at the end of linked list
+        //
+
+    }
+
+    function get(key) {}
+
+    function has(key) {}
+
+    function remove(key) {}
+
+    function length() {
+        return capacity;
+    }
+
+    function clear() {
+        array = new Array(START_SIZE);
+        capacity = 0;
+    }
+
+    function keys() {}
+
+    function values() {}
+
+    function entries() {}
+
+    function exceedsLoadFactor() {
+        const currentLoad = capacity / array.length;
+        return currentLoad >= LOAD_FACTOR;
+    }
+
+    function resizeMap() {
+        
     }
 
     return {
         hash,
     };
-
-    function length() {
-        return array.length;
-    }
 }
 
 let map = HashMap();
 
 console.log(map.hash('beyzu'));
+console.log(map.hash('apple'));
+console.log(map.hash('orange'));
+console.log(map.hash('daniel'));
