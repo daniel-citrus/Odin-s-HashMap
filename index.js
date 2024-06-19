@@ -17,7 +17,10 @@ function HashMap() {
     }
 
     function set(key, value) {
+        const node = Node(key, value);
+
         // get hash code
+        const hashCode = hash(key);
         // check array for existing values
         //      if undefined
         //          insert a new node
@@ -27,12 +30,23 @@ function HashMap() {
         //      else
         //          insert new node at the end of linked list
         //
-
     }
 
     function get(key) {}
 
-    function has(key) {}
+    function has(key) {
+        const hashCode = hash(key);
+        const linkedList = array[hashCode];
+        let ptr = linkedList;
+
+        while (ptr) {
+            if (ptr.key === key) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     function remove(key) {}
 
@@ -56,12 +70,20 @@ function HashMap() {
         return currentLoad >= LOAD_FACTOR;
     }
 
-    function resizeMap() {
-        
-    }
+    function resizeMap() {}
 
     return {
+        has,
         hash,
+        set,
+    };
+}
+
+function Node(key, value, next = null) {
+    return {
+        key,
+        value,
+        next,
     };
 }
 
