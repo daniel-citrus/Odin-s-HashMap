@@ -24,6 +24,7 @@ function HashMap() {
      */
     function set(key, value) {
         if (exceedsLoadFactor()) {
+            resizeMap();
         }
 
         const node = createNode(key, value);
@@ -91,7 +92,23 @@ function HashMap() {
         return currentLoad >= LOAD_FACTOR;
     }
 
-    function resizeMap() {}
+    /**
+     * Grow map and rehash data
+     */
+    function growMap() {
+        const newArray = new Array(array.length * 2);
+
+        let ptr;
+
+        array.forEach((node) => {
+            ptr = node;
+            while (ptr) {
+                console.log(ptr);
+                ptr = ptr.next;
+            }
+            console.log(`------------------------------`);
+        });
+    }
 
     function display() {
         let str, ptr;
@@ -117,6 +134,7 @@ function HashMap() {
         hash,
         set,
         display,
+        growMap,
     };
 }
 
@@ -132,4 +150,4 @@ let map = HashMap();
 
 map.set('daniel', 4);
 map.set('lolita', '6');
-map.display();
+map.growMap();
