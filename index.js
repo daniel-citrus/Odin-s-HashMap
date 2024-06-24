@@ -16,20 +16,41 @@ function HashMap() {
         return hashCode;
     }
 
+    /**
+     * Inserts new node into hash map. If key was reused, then override previous value. If a different key reaches a populated hashkey, insert a new node at the end of the list.
+     * @param {*} key
+     * @param {*} value
+     * @returns
+     */
     function set(key, value) {
-        const node = Node(key, value);
+        if (exceedsLoadFactor()) {
+        }
 
-        // get hash code
+        const node = createNode(key, value);
         const hashCode = hash(key);
-        // check array for existing values
-        //      if undefined
-        //          insert a new node
-        //          store key
-        //          store value
-        //          store next node is null
-        //      else
-        //          insert new node at the end of linked list
-        //
+
+        if (!array[hashCode]) {
+            array[hashCode] = node;
+        } else {
+            let ptr = array[hashCode];
+
+            while (ptr) {
+                if (ptr.key === key) {
+                    ptr.value = value;
+                    return;
+                }
+
+                if (!ptr.next) {
+                    break;
+                }
+
+                ptr = ptr.next;
+            }
+
+            ptr.next = node;
+        }
+
+        capacity++;
     }
 
     function get(key) {}
@@ -72,14 +93,34 @@ function HashMap() {
 
     function resizeMap() {}
 
+    function display() {
+        let str, ptr;
+
+        for (let i = 0; i < array.length; i++) {
+            str = `(${i}): `;
+
+            ptr = array[i];
+
+            while (ptr) {
+                str += `[${ptr.key}:${ptr.value}] -> `;
+                ptr = ptr.next;
+            }
+
+            str += `null`;
+            console.log(str);
+            str = '';
+        }
+    }
+
     return {
         has,
         hash,
         set,
+        display,
     };
 }
 
-function Node(key, value, next = null) {
+function createNode(key, value, next = null) {
     return {
         key,
         value,
@@ -89,7 +130,6 @@ function Node(key, value, next = null) {
 
 let map = HashMap();
 
-console.log(map.hash('beyzu'));
-console.log(map.hash('apple'));
-console.log(map.hash('orange'));
-console.log(map.hash('daniel'));
+map.set('daniel', 4);
+map.set('lolita', '6');
+map.display();
