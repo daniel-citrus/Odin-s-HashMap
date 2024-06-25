@@ -1,7 +1,8 @@
 function HashMap() {
-    const START_SIZE = 16;
+    /* const START_SIZE = 10; */
+    const START_SIZE = 2;
     const LOAD_FACTOR = 0.75;
-    let array = new Array(START_SIZE);
+    let bucket = new Array(START_SIZE);
     let capacity = 0;
 
     function hash(key) {
@@ -10,7 +11,7 @@ function HashMap() {
 
         for (let i = 0; i < key.length; i++) {
             hashCode = primeNumber * hashCode + key.charCodeAt(i);
-            hashCode %= array.length;
+            hashCode %= bucket.length;
         }
 
         return hashCode;
@@ -24,16 +25,16 @@ function HashMap() {
      */
     function set(key, value) {
         if (exceedsLoadFactor()) {
-            resizeMap();
+            growBucket();
         }
 
         const node = createNode(key, value);
         const hashCode = hash(key);
 
-        if (!array[hashCode]) {
-            array[hashCode] = node;
+        if (!bucket[hashCode]) {
+            bucket[hashCode] = node;
         } else {
-            let ptr = array[hashCode];
+            let ptr = bucket[hashCode];
 
             while (ptr) {
                 if (ptr.key === key) {
@@ -54,11 +55,25 @@ function HashMap() {
         capacity++;
     }
 
-    function get(key) {}
+    function get(key) {
+        const hashCode = hash(key);
+        const contents = bucket[hashCode];
+        let ptr = contents;
+
+        while (ptr) {
+            if (ptr.key === key) {
+                return ptr.value;
+            }
+
+            ptr = ptr.next;
+        }
+
+        return null;
+    }
 
     function has(key) {
         const hashCode = hash(key);
-        const linkedList = array[hashCode];
+        const linkedList = bucket[hashCode];
         let ptr = linkedList;
 
         while (ptr) {
@@ -77,46 +92,62 @@ function HashMap() {
     }
 
     function clear() {
-        array = new Array(START_SIZE);
+        bucket = new Array(START_SIZE);
         capacity = 0;
     }
 
-    function keys() {}
+    function keys() {
+        const keys = new Array();
+
+        bucket.forEach((content) => {
+            let ptr = content;
+
+            while (ptr) {
+                keys.push(ptr.key);
+                ptr = ptr.next;
+            }
+        });
+
+        return keys;
+    }
 
     function values() {}
 
     function entries() {}
 
     function exceedsLoadFactor() {
-        const currentLoad = capacity / array.length;
+        const currentLoad = capacity / bucket.length;
         return currentLoad >= LOAD_FACTOR;
     }
 
     /**
-     * Grow map and rehash data
+     * Grow bucket and rehash data
      */
-    function growMap() {
-        const newArray = new Array(array.length * 2);
+    function growBucket() {
+        console.log(`Map Grows`);
+        const oldBucket = bucket;
+        capacity = 0;
+        bucket = new Array(bucket.length * 2);
 
         let ptr;
 
-        array.forEach((node) => {
+        oldBucket.forEach((node) => {
             ptr = node;
+
             while (ptr) {
-                console.log(ptr);
+                set(ptr.key, ptr.value);
                 ptr = ptr.next;
             }
-            console.log(`------------------------------`);
         });
     }
 
     function display() {
         let str, ptr;
 
-        for (let i = 0; i < array.length; i++) {
+        for (let i = 0; i < bucket.length; i++) {
             str = `(${i}): `;
 
-            ptr = array[i];
+            ptr = bucket[i];
 
             while (ptr) {
                 str += `[${ptr.key}:${ptr.value}] -> `;
@@ -127,14 +158,20 @@ function HashMap() {
             console.log(str);
             str = '';
         }
+
+        console.log(`-------------------------------------------------------`);
     }
 
     return {
+        clear,
+        display,
+        get,
+        growBucket,
         has,
         hash,
+        keys,
+        length,
         set,
-        display,
-        growMap,
     };
 }
 
@@ -149,5 +186,9 @@ function createNode(key, value, next = null) {
 let map = HashMap();
 
 map.set('daniel', 4);
+map.set('d', 4);
+map.set('fl', 4);
+map.set('sdfds', 4);
 map.set('lolita', '6');
-map.growMap();
+map.display();
+console.log(map.keys());
