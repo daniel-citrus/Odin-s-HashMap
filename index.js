@@ -155,7 +155,16 @@ function HashMap() {
         return result;
     }
 
-    function entries() {}
+    function entries() {
+        const result = [];
+
+        bucket.forEach((linkedList) => {
+            if (!linkedList) return;
+            result.push([linkedList.key, linkedList.value]);
+        });
+
+        return result;
+    }
 
     function exceedsLoadFactor() {
         const currentLoad = capacity / bucket.length;
@@ -166,7 +175,6 @@ function HashMap() {
      * Grow bucket and rehash data
      */
     function growBucket() {
-        console.log(`Map Grows`);
         const oldBucket = bucket;
         capacity = 0;
         bucket = new Array(bucket.length * 2);
@@ -184,6 +192,7 @@ function HashMap() {
     }
 
     function display() {
+        console.log(`-------------------------------------------------------`);
         let str, ptr;
 
         for (let i = 0; i < bucket.length; i++) {
@@ -200,13 +209,12 @@ function HashMap() {
             console.log(str);
             str = '';
         }
-
-        console.log(`-------------------------------------------------------`);
     }
 
     return {
         clear,
         display,
+        entries,
         get,
         growBucket,
         has,
@@ -235,5 +243,15 @@ map.set('orange', 'juice');
 map.set('purple', 'yams');
 map.set('egg', 'whites');
 map.set('red', 'hawk');
-map.display();
+
+map.get('lolita');
+map.has('daniel');
+map.remove('purple');
+console.log(map.length());
+console.log(map.keys());
 console.log(map.values());
+console.log(map.entries());
+
+map.display();
+map.clear();
+map.display();
