@@ -24,10 +24,6 @@ function HashMap() {
      * @returns
      */
     function set(key, value) {
-        if (exceedsLoadFactor()) {
-            growBucket();
-        }
-
         const node = createNode(key, value);
         const hashCode = hash(key);
 
@@ -53,6 +49,9 @@ function HashMap() {
         }
 
         capacity++;
+        if (exceedsLoadFactor()) {
+            growBucket();
+        }
     }
 
     function get(key) {
@@ -168,7 +167,7 @@ function HashMap() {
 
     function exceedsLoadFactor() {
         const currentLoad = capacity / bucket.length;
-        return currentLoad >= LOAD_FACTOR;
+        return currentLoad > LOAD_FACTOR;
     }
 
     /**
@@ -235,23 +234,22 @@ function createNode(key, value, next = null) {
     };
 }
 
-let map = HashMap();
+const test = HashMap();
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
 
-map.set('daniel', 'calvo');
-map.set('lolita', 'cutie');
-map.set('orange', 'juice');
-map.set('purple', 'yams');
-map.set('egg', 'whites');
-map.set('red', 'hawk');
+test.set('elephant', 'small');
+test.set('kite', 'red');
+test.set('moon', 'silver');
 
-map.get('lolita');
-map.has('daniel');
-map.remove('purple');
-console.log(map.length());
-console.log(map.keys());
-console.log(map.values());
-console.log(map.entries());
-
-map.display();
-map.clear();
-map.display();
+test.display();
