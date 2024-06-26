@@ -139,7 +139,21 @@ function HashMap() {
         return keys;
     }
 
-    function values() {}
+    function values() {
+        const result = [];
+
+        bucket.forEach((linkedList) => {
+            let ptr = linkedList;
+
+            while (ptr) {
+                result.push(ptr.value);
+
+                ptr = ptr.next;
+            }
+        });
+
+        return result;
+    }
 
     function entries() {}
 
@@ -201,6 +215,7 @@ function HashMap() {
         length,
         remove,
         set,
+        values,
     };
 }
 
@@ -219,8 +234,6 @@ map.set('lolita', 'cutie');
 map.set('orange', 'juice');
 map.set('purple', 'yams');
 map.set('egg', 'whites');
-map.set('wallly', 'west');
 map.set('red', 'hawk');
 map.display();
-map.remove('daniel');
-map.display();
+console.log(map.values());
