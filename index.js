@@ -85,7 +85,35 @@ function HashMap() {
         return false;
     }
 
-    function remove(key) {}
+    function remove(key) {
+        const hashCode = hash(key);
+        let linkedList = bucket[hashCode];
+
+        // Empty
+        if (!linkedList) {
+            return false;
+        }
+
+        let ptr = linkedList;
+
+        // Key in the first node
+        if (ptr.key === key) {
+            linkedList = linkedList.next;
+            bucket[hashCode] = linkedList;
+            return true;
+        }
+
+        while (ptr.next) {
+            if (ptr.next.key === key) {
+                ptr.next = ptr.next.next;
+                return true;
+            }
+
+            ptr = ptr.next;
+        }
+
+        return false;
+    }
 
     function length() {
         return capacity;
@@ -171,6 +199,7 @@ function HashMap() {
         hash,
         keys,
         length,
+        remove,
         set,
     };
 }
@@ -185,10 +214,13 @@ function createNode(key, value, next = null) {
 
 let map = HashMap();
 
-map.set('daniel', 4);
-map.set('d', 4);
-map.set('fl', 4);
-map.set('sdfds', 4);
-map.set('lolita', '6');
+map.set('daniel', 'calvo');
+map.set('lolita', 'cutie');
+map.set('orange', 'juice');
+map.set('purple', 'yams');
+map.set('egg', 'whites');
+map.set('wallly', 'west');
+map.set('red', 'hawk');
 map.display();
-console.log(map.keys());
+map.remove('daniel');
+map.display();
